@@ -89,9 +89,7 @@ function initMap_<?=$component_info['report_components_id']?>() {
                 }else{
                     return false;
                 }
-            }
-         
-            else{
+            }else{
                 $this -> _ITE -> __warn("<strong>ERROR: {$resp['status']} $address</strong>",'priority');
                 return false;
             }
