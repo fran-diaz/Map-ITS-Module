@@ -1,5 +1,5 @@
 <?php
-init_ITEC();
+//init_ITEC();
 
 if( ! function_exists( 'randy' ) ) {
     function randy(){
@@ -19,10 +19,10 @@ function initMap_<?=$component_info['report_components_id']?>() {
     });
 
     <?php
-    $_ITE -> debug -> disabled = true;
+    $this -> _ITE -> debug -> disabled = true;
     $coordenadas = [];
 
-    $logins_info = $_ITEC -> select('users__trace','*',['users_id' => $_SESSION['uid'], 'aux' => 'login', 'LIMIT' => '30','ORDER' => ['date' => 'DESC'] ]);
+    $logins_info = $this -> _ITEC -> select('users__trace','*',['users_id' => $_SESSION['uid'], 'aux' => 'login', 'LIMIT' => '30','ORDER' => ['date' => 'DESC'] ]);
     
     if( $logins_info ) { foreach( $logins_info as $num => $login ) { 
         $coordenadas[$login['latitude'].'-'.$login['longitude']][] = $login;
@@ -50,7 +50,7 @@ function initMap_<?=$component_info['report_components_id']?>() {
             });
         <?php } ?>
     <?php }
-    $_ITE -> debug -> disabled = false;
+    $this -> _ITE -> debug -> disabled = false;
     ?>
     
 
