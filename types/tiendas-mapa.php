@@ -1,5 +1,5 @@
 <?php
-init_ITEC();
+//init_ITEC();
 
 if( ! function_exists( 'randy' ) ) {
     function randy(){
@@ -21,31 +21,22 @@ function codeAddress( address ) {
     });
 }
 <?php
-$_ITE -> debug -> disabled = true;
+$this -> _ITE -> debug -> disabled = true;
 $coordenadas = [];
-
-$external_connection_id = $this->cfg( 'conexión', 'external_connection' );
-if( ! empty( $external_connection_id ) ) {
-    $conn_data = $_ITEC -> get( 'system__connections', '*', ['system__connections_id' => $external_connection_id ]);
-    $_ITEC_temp = new ITE\db\db ( $conn_data, $_ITE );
-} else {
-    $_ITE -> __warn('No ha sido posible conectar a la base de datos externa con los datos proporcionados en el componente \''.$_POST['c'].'\', Utilizando la conexión local.');
-    $_ITEC_temp = $_ITEC;
-}
 
 $center_coods = '{ lat: 40.4381311, lng: -3.8196196 }';
 if( isset( $_REQUEST['d'] ) ) {
     $data = decode($_REQUEST['d']);
-    $tiendas = $_ITEC_temp -> select('_centros_trabajo','*',[$data['table'].'_id' => $data['id']]);
+    $tiendas = $this -> _ITExt -> select('_centros_trabajo','*',[$data['table'].'_id' => $data['id']]);
     if($tiendas){
         $center_coods = '{ lat: '.$tiendas[0]['latitude'].', lng: '.$tiendas[0]['longitude'].' }';
     }
 } else {
     $name_filter = $this->cfg( 'contenido', 'name_filter' );
     if( ! empty($name_filter) ){
-        $tiendas = $_ITEC_temp -> select('_centros_trabajo','*',['centro_trabajo[~]' => $name_filter] );
+        $tiendas = $this -> _ITExt -> select('_centros_trabajo','*',['centro_trabajo[~]' => $name_filter] );
     } else {
-        $tiendas = $_ITEC_temp -> select('_centros_trabajo','*');
+        $tiendas = $this -> _ITExt -> select('_centros_trabajo','*');
     }
 }
 
@@ -63,7 +54,6 @@ function initMap_<?=$component_info['report_components_id']?>() {
     // function to geocode address, it will return false if unable to geocode address
     if( ! function_exists( 'geocode' ) ) {
         function geocode($address){
-            global $_ITE;
             // url encode the address
             $address = urlencode($address);
              
@@ -102,7 +92,7 @@ function initMap_<?=$component_info['report_components_id']?>() {
             }
          
             else{
-                $_ITE -> __warn("<strong>ERROR: {$resp['status']} $address</strong>",'priority');
+                $this -> _ITE -> __warn("<strong>ERROR: {$resp['status']} $address</strong>",'priority');
                 return false;
             }
         }
@@ -114,7 +104,7 @@ function initMap_<?=$component_info['report_components_id']?>() {
             if( ! coords ){ continue; }
             $tienda['latitude'] = $coords['latitude'];
             $tienda['longitude'] = $coords['longitude'];
-            $_ITEC_temp -> update('_centros_trabajo', ['latitude' => $coords['latitude'], 'longitude' => $coords['longitude']], ['_centros_trabajo_id' => $tienda['_centros_trabajo_id']]);
+            $this -> _ITExt -> update('_centros_trabajo', ['latitude' => $coords['latitude'], 'longitude' => $coords['longitude']], ['_centros_trabajo_id' => $tienda['_centros_trabajo_id']]);
         }
         $coordenadas[$tienda['latitude'].' - '.$tienda['longitude']][] = $tienda;
     }}
@@ -173,7 +163,7 @@ function initMap_<?=$component_info['report_components_id']?>() {
             <?php } ?>
         <?php } ?>
     <?php }
-    $_ITE -> debug -> disabled = false;
+    $this -> _ITE -> debug -> disabled = false;
     ?>
 }
 
