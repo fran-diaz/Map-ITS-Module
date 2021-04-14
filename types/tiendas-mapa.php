@@ -68,7 +68,7 @@ function initMap_<?=$component_info['report_components_id']?>() {
             $address = urlencode($address);
              
             // google map geocode api url
-            $url = "https://maps.googleapis.com/maps/api/geocode/json?address={$address}&key=AIzaSyCwzaC6vTV8unjsZy4vsZ_h8-X0367J7D4";
+            $url = "https://maps.googleapis.com/maps/api/geocode/json?address={$address}&key=".MAPS_API_KEY;
          
             // get the json response
             $resp_json = file_get_contents($url);
@@ -178,5 +178,5 @@ function initMap_<?=$component_info['report_components_id']?>() {
 }
 
 
-$.loadScript( "https://maps.googleapis.com/maps/api/js?key=AIzaSyCwzaC6vTV8unjsZy4vsZ_h8-X0367J7D4&callback=initMap_<?=$component_info['report_components_id']?>", false );
+$.loadScript( "https://maps.googleapis.com/maps/api/js?key=<?=MAPS_API_KEY?>&callback=initMap_<?=$component_info['report_components_id']?>", false );
 </script>

@@ -165,5 +165,5 @@ function initMap_<?=$component_info['report_components_id']?>() {
     
 }
 
-$.loadScript( "https://maps.googleapis.com/maps/api/js?key=".<?=MAPS_API_KEY?>."&callback=initMap_<?=$component_info['report_components_id']?>", false );
+$.loadScript( "https://maps.googleapis.com/maps/api/js?key=<?=MAPS_API_KEY?>&callback=initMap_<?=$component_info['report_components_id']?>", false );
 </script>
