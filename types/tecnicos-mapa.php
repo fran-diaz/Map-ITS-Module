@@ -9,7 +9,7 @@ if( ! function_exists( 'randy' ) ) {
 ?>
 <script>
 //var geocoder;
-var map_<?=$component_info['report_components_id']?>;
+var map_<?=$this -> component_id?>;
 
 function codeAddress( address ) {
     geocoder.geocode( { 'address': address}, function(results, status) {
@@ -36,9 +36,9 @@ if( isset( $_REQUEST['d'] ) && $_SESSION['d'] != false ) {
 }
 ?>
 
-function initMap_<?=$component_info['report_components_id']?>() {
+function initMap_<?=$this -> component_id?>() {
     //geocoder = new google.maps.Geocoder();
-    map_<?=$component_info['report_components_id']?> = new google.maps.Map(document.getElementById('map-<?=$component_info['report_components_id']?>'), {
+    map_<?=$this -> component_id?> = new google.maps.Map(document.getElementById('map-<?=$this -> component_id?>'), {
         zoom: <?=$this->cfg( 'contenido', 'zoom' )?>,
         center: <?=$center_coods?>,
         heading: 90,
@@ -118,15 +118,15 @@ function initMap_<?=$component_info['report_components_id']?>() {
                 $lat = (rand(0,1) === 1) ? $tecnico['latitude'] + randy() : $tecnico['latitude'] - randy();
                 $long = (rand(0,1) === 1) ? $tecnico['longitude'] + randy() : $tecnico['longitude'] - randy();
                 ?>
-                var marker_<?=$component_info['report_components_id']?>_<?=$tecnico['_tecnicos_id']?> = new google.maps.Marker({
+                var marker_<?=$this -> component_id?>_<?=$tecnico['_tecnicos_id']?> = new google.maps.Marker({
                     position: { lat: <?=$lat?>, lng: <?=$long?> },
-                    map: map_<?=$component_info['report_components_id']?>,
+                    map: map_<?=$this -> component_id?>,
                     title: '<?=$tecnico['nombre']?> (<?=$tecnico['telefono']?>)',
                     animation: google.maps.Animation.DROP,
                 });
 
                 <?php if( $info ) { ?>
-                    marker_<?=$component_info['report_components_id']?>_<?=$tecnico['_tecnicos_id']?>.addListener( 'click', function(){
+                    marker_<?=$this -> component_id?>_<?=$tecnico['_tecnicos_id']?>.addListener( 'click', function(){
                         <?php
                         $url_d = encode(['table' => '_tecnicos', 'id' => $tecnico['_tecnicos_id'], 'dsn' => $this -> _ITExt -> info()['dsn'] ]);
                         ?>
@@ -137,15 +137,15 @@ function initMap_<?=$component_info['report_components_id']?>() {
                 <?php } ?>
             <?php }
         } else { ?>
-            var marker_<?=$component_info['report_components_id']?>_<?=$tecnicos[0]['_tecnicos_id']?> = new google.maps.Marker({
+            var marker_<?=$this -> component_id?>_<?=$tecnicos[0]['_tecnicos_id']?> = new google.maps.Marker({
                 position: { lat: <?=$tecnicos[0]['latitude']?>, lng: <?=$tecnicos[0]['longitude']?> },
-                map: map_<?=$component_info['report_components_id']?>,
+                map: map_<?=$this -> component_id?>,
                 title: '<?=$tecnicos[0]['nombre']?> (<?=$tecnicos[0]['telefono']?>)',
                 animation: google.maps.Animation.DROP,
             });
 
             <?php if( $info ) { ?>
-                marker_<?=$component_info['report_components_id']?>_<?=$tecnicos[0]['_tecnicos_id']?>.addListener( 'click', function(){
+                marker_<?=$this -> component_id?>_<?=$tecnicos[0]['_tecnicos_id']?>.addListener( 'click', function(){
                     <?php
                     $url_d = encode(['table' => '_tecnicos', 'id' => $tecnicos[0]['_tecnicos_id'], 'dsn' => $this -> _ITExt -> info()['dsn'] ]);
                     ?>
@@ -163,6 +163,6 @@ function initMap_<?=$component_info['report_components_id']?>() {
     
 }
 
-$.loadScript( "https://maps.googleapis.com/maps/api/js?key=<?=MAPS_API_KEY?>&callback=initMap_<?=$component_info['report_components_id']?>", false );
+$.loadScript( "https://maps.googleapis.com/maps/api/js?key=<?=MAPS_API_KEY?>&callback=initMap_<?=$this -> component_id?>", false );
 
 </script>

@@ -8,10 +8,10 @@ if( ! function_exists( 'randy' ) ) {
 }
 ?>
 <script>
-var map_<?=$component_info['report_components_id']?>;
+var map_<?=$this -> component_id?>;
 
-function initMap_<?=$component_info['report_components_id']?>() {
-    map_<?=$component_info['report_components_id']?> = new google.maps.Map(document.getElementById('map-<?=$component_info['report_components_id']?>'), {
+function initMap_<?=$this -> component_id?>() {
+    map_<?=$this -> component_id?> = new google.maps.Map(document.getElementById('map-<?=$this -> component_id?>'), {
         zoom: <?=$this->cfg( 'contenido', 'zoom' )?>,
         center: { lat: 40.4381311, lng: -3.8196196 },
         heading: 90,
@@ -36,7 +36,7 @@ function initMap_<?=$component_info['report_components_id']?>() {
                 ?>
             new google.maps.Marker({
                 position: { lat: <?=$lat?>, lng: <?=$long?> },
-                map: map_<?=$component_info['report_components_id']?>,
+                map: map_<?=$this -> component_id?>,
                 title: '<?=$_ITE -> funcs -> date_format( $login['date'], 5 )?>',
                 animation: google.maps.Animation.DROP,
             });
@@ -44,7 +44,7 @@ function initMap_<?=$component_info['report_components_id']?>() {
         } else { ?>
             new google.maps.Marker({
                 position: { lat: <?=$logins[0]['latitude']?>, lng: <?=$logins[0]['longitude']?> },
-                map: map_<?=$component_info['report_components_id']?>,
+                map: map_<?=$this -> component_id?>,
                 title: '<?=$_ITE -> funcs -> date_format( $logins[0]['date'], 5 )?>',
                 animation: google.maps.Animation.DROP,
             });
@@ -56,5 +56,5 @@ function initMap_<?=$component_info['report_components_id']?>() {
 
     
 }
-$.loadScript( "https://maps.googleapis.com/maps/api/js?key=<?=MAPS_API_KEY?>&callback=initMap_<?=$component_info['report_components_id']?>", false );
+$.loadScript( "https://maps.googleapis.com/maps/api/js?key=<?=MAPS_API_KEY?>&callback=initMap_<?=$this -> component_id?>", false );
 </script>

@@ -9,7 +9,7 @@ if( ! function_exists( 'randy' ) ) {
 ?>
 <script>
 //var geocoder;
-var map_<?=$component_info['report_components_id']?>;
+var map_<?=$this -> component_id?>;
 
 function codeAddress( address ) {
     geocoder.geocode( { 'address': address}, function(results, status) {
@@ -35,9 +35,9 @@ if( isset( $_REQUEST['d'] ) ) {
     }
 } 
 ?>
-function initMap_<?=$component_info['report_components_id']?>() {
+function initMap_<?=$this -> component_id?>() {
     //geocoder = new google.maps.Geocoder();
-    map_<?=$component_info['report_components_id']?> = new google.maps.Map(document.getElementById('map-<?=$component_info['report_components_id']?>'), {
+    map_<?=$this -> component_id?> = new google.maps.Map(document.getElementById('map-<?=$this -> component_id?>'), {
         zoom: <?=(!empty($this->cfg( 'contenido', 'zoom' ))?$this->cfg( 'contenido', 'zoom' ):'8')?>,
         center: <?=$center_coods?>,
         heading: 90,
@@ -112,15 +112,15 @@ function initMap_<?=$component_info['report_components_id']?>() {
                 $lat = (rand(0,1) === 1) ? $tienda['latitude'] + randy() : $tienda['latitude'] - randy();
                 $long = (rand(0,1) === 1) ? $tienda['longitude'] + randy() : $tienda['longitude'] - randy();
                 ?>
-                var marker_<?=$component_info['report_components_id']?>_<?=$tienda['_centros_trabajo_id']?> = new google.maps.Marker({
+                var marker_<?=$this -> component_id?>_<?=$tienda['_centros_trabajo_id']?> = new google.maps.Marker({
                     position: { lat: <?=$lat?>, lng: <?=$long?> },
-                    map: map_<?=$component_info['report_components_id']?>,
+                    map: map_<?=$this -> component_id?>,
                     title: '<?=$tienda['centro_trabajo']?> (<?=$tienda['codigo_tienda']?>)',
                     animation: google.maps.Animation.DROP,
                 });
 
                 <?php if( $info ) { ?>
-                    marker_<?=$component_info['report_components_id']?>_<?=$tienda['_centros_trabajo_id']?>.addListener( 'click', function(){
+                    marker_<?=$this -> component_id?>_<?=$tienda['_centros_trabajo_id']?>.addListener( 'click', function(){
                         <?php
                         $url_d = encode(['table' => '_centros_trabajo', 'id' => $tienda['_centros_trabajo_id'], 'dsn' => $this -> _ITExt -> info()['dsn'] ]);
                         ?>
@@ -131,15 +131,15 @@ function initMap_<?=$component_info['report_components_id']?>() {
                 <?php } ?>
             <?php }
         } else { ?>
-            var marker_<?=$component_info['report_components_id']?>_<?=$tiendas[0]['_centros_trabajo_id']?> = new google.maps.Marker({
+            var marker_<?=$this -> component_id?>_<?=$tiendas[0]['_centros_trabajo_id']?> = new google.maps.Marker({
                 position: { lat: <?=$tiendas[0]['latitude']?>, lng: <?=$tiendas[0]['longitude']?> },
-                map: map_<?=$component_info['report_components_id']?>,
+                map: map_<?=$this -> component_id?>,
                 title: '<?=$tiendas[0]['centro_trabajo']?> (<?=$tiendas[0]['codigo_tienda']?>)',
                 animation: google.maps.Animation.DROP,
             });
 
             <?php if( $info ) { ?>
-                marker_<?=$component_info['report_components_id']?>_<?=$tiendas[0]['_centros_trabajo_id']?>.addListener( 'click', function(){
+                marker_<?=$this -> component_id?>_<?=$tiendas[0]['_centros_trabajo_id']?>.addListener( 'click', function(){
                     <?php
                     $url_d = encode(['table' => '_centros_trabajo', 'id' => $tiendas[0]['_centros_trabajo_id'], 'dsn' => $this -> _ITExt -> info()['dsn'] ]);
                     ?>
@@ -157,5 +157,5 @@ function initMap_<?=$component_info['report_components_id']?>() {
     
 }
 
-$.loadScript( "https://maps.googleapis.com/maps/api/js?key=<?=MAPS_API_KEY?>&callback=initMap_<?=$component_info['report_components_id']?>", false );
+$.loadScript( "https://maps.googleapis.com/maps/api/js?key=<?=MAPS_API_KEY?>&callback=initMap_<?=$this -> component_id?>", false );
 </script>
