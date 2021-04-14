@@ -24,20 +24,12 @@ function codeAddress( address ) {
 $_ITE -> debug -> disabled = true;
 $coordenadas = [];
 
-$external_connection_id = $this->cfg( 'conexión', 'external_connection' );
-if( ! empty( $external_connection_id ) ) {
-    $conn_data = $_ITEC -> get( 'system__connections', '*', ['system__connections_id' => $external_connection_id ]);
-    $_ITEC_temp = new ITE\db\db ( $conn_data, $_ITE );
-} else {
-    $_ITE -> __warn('No ha sido posible conextar a la base de datos externa con los datos proporcionados en el componente \''.$_POST['c'].'\', Utilizando la conexión local.');
-    $_ITEC_temp = $_ITEC;
-}
 
 $center_coods = '{ lat: 40.4381311, lng: -3.8196196 }';
 if( isset( $_REQUEST['d'] ) ) {
     $data = decode($_REQUEST['d']);
-    $aux = $_ITEC_temp -> get('_intervenciones','*',[$data['table'].'_id' => $data['id']]);
-    $tiendas = $_ITEC_temp -> select('_centros_trabajo','*',['_centros_trabajo_id' => $aux['_centros_trabajo_id']]);
+    $aux = $this -> _ITExt -> get('_intervenciones','*',[$data['table'].'_id' => $data['id']]);
+    $tiendas = $this -> _ITExt -> select('_centros_trabajo','*',['_centros_trabajo_id' => $aux['_centros_trabajo_id']]);
     if($tiendas){
         $center_coods = '{ lat: '.$tiendas[0]['latitude'].', lng: '.$tiendas[0]['longitude'].' }';
     }
@@ -104,12 +96,12 @@ function initMap_<?=$component_info['report_components_id']?>() {
             $coords = geocode($tienda['direccion'].', '.$tienda['localidad'].', '.$tienda['provincia']);
             $tienda['latitude'] = $coords['latitude'];
             $tienda['longitude'] = $coords['longitude'];
-            $_ITEC_temp -> update('_centros_trabajo', ['latitude' => $coords['latitude'], 'longitude' => $coords['longitude']], ['_centros_trabajo_id' => $tienda['_centros_trabajo_id']]);
+            $this -> _ITExt -> update('_centros_trabajo', ['latitude' => $coords['latitude'], 'longitude' => $coords['longitude']], ['_centros_trabajo_id' => $tienda['_centros_trabajo_id']]);
         }
         $coordenadas[$tienda['latitude'].' - '.$tienda['longitude']][] = $tienda;
     }}
 
-    $info = $_ITEC -> get( 'reports', '*', ['hook' => '_centros_trabajo'] );
+    $info = $this -> _ITEC -> get( 'reports', '*', ['hook' => '_centros_trabajo'] );
     if( $info ) {
         $details_url = 'https://maps.google.com/?q='.$tienda['latitude'].','.$tienda['longitude'];
     }
@@ -130,7 +122,7 @@ function initMap_<?=$component_info['report_components_id']?>() {
                 <?php if( $info ) { ?>
                     marker_<?=$component_info['report_components_id']?>_<?=$tienda['_centros_trabajo_id']?>.addListener( 'click', function(){
                         <?php
-                        $url_d = encode(['table' => '_centros_trabajo', 'id' => $tienda['_centros_trabajo_id'], 'dsn' => $_ITEC_temp -> info()['dsn'] ]);
+                        $url_d = encode(['table' => '_centros_trabajo', 'id' => $tienda['_centros_trabajo_id'], 'dsn' => $this -> _ITExt -> info()['dsn'] ]);
                         ?>
                         window.open('<?=$details_url?>','_blank');
                     } );
@@ -149,7 +141,7 @@ function initMap_<?=$component_info['report_components_id']?>() {
             <?php if( $info ) { ?>
                 marker_<?=$component_info['report_components_id']?>_<?=$tiendas[0]['_centros_trabajo_id']?>.addListener( 'click', function(){
                     <?php
-                    $url_d = encode(['table' => '_centros_trabajo', 'id' => $tiendas[0]['_centros_trabajo_id'], 'dsn' => $_ITEC_temp -> info()['dsn'] ]);
+                    $url_d = encode(['table' => '_centros_trabajo', 'id' => $tiendas[0]['_centros_trabajo_id'], 'dsn' => $this -> _ITExt -> info()['dsn'] ]);
                     ?>
                     window.open('<?=$details_url?>','_blank');
                 } );
