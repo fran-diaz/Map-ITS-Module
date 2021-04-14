@@ -150,7 +150,7 @@ function initMap_<?=$component_info['report_components_id']?>() {
             <?php } ?>
         <?php } ?>
     <?php }
-    $_ITE -> debug -> disabled = false;
+    $this -> _ITE -> debug -> disabled = false;
     ?>
     
 

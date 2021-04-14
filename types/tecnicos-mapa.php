@@ -1,5 +1,5 @@
 <?php
-init_ITEC();
+//init_ITEC();
 
 if( ! function_exists( 'randy' ) ) {
     function randy(){
@@ -21,27 +21,18 @@ function codeAddress( address ) {
     });
 }
 <?php
-$_ITE -> debug -> disabled = true;
+$this -> _ITE -> debug -> disabled = true;
 $coordenadas = [];
-
-$external_connection_id = $this->cfg( 'conexión', 'external_connection' );
-if( ! empty( $external_connection_id ) ) {
-    $conn_data = $_ITEC -> get( 'system__connections', '*', ['system__connections_id' => $external_connection_id ]);
-    $_ITEC_temp = new ITE\db\db ( $conn_data, $_ITE );
-} else {
-    $_ITE -> __warn('No ha sido posible conextar a la base de datos externa con los datos proporcionados en el componente \''.$_POST['c'].'\', Utilizando la conexión local.');
-    $_ITEC_temp = $_ITEC;
-}
 
 $center_coods = '{ lat: 40.4381311, lng: -3.8196196 }';
 if( isset( $_REQUEST['d'] ) && $_SESSION['d'] != false ) {
     $data = decode($_REQUEST['d']);
-    $tecnicos = $_ITEC_temp -> select('_tecnicos','*',[$data['table'].'_id' => $data['id']]);
+    $tecnicos = $this -> _ITExt -> select('_tecnicos','*',[$data['table'].'_id' => $data['id']]);
     if($tecnicos){
         $center_coods = '{ lat: '.$tecnicos[0]['latitude'].', lng: '.$tecnicos[0]['longitude'].' }';
     }
 } else {
-    $tecnicos = $_ITEC_temp -> select('_tecnicos');
+    $tecnicos = $this -> _ITExt -> select('_tecnicos');
 }
 ?>
 
@@ -102,7 +93,7 @@ function initMap_<?=$component_info['report_components_id']?>() {
         }
     }
     
-    $info = $_ITEC -> get( 'reports', '*', ['hook' => '_tecnicos'] );
+    $info = $this -> _ITEC -> get( 'reports', '*', ['hook' => '_tecnicos'] );
     if( $info ) {
         $details_url = '/informes/'.$info['reports_id'];
     }
@@ -115,7 +106,7 @@ function initMap_<?=$component_info['report_components_id']?>() {
             $coords = geocode($tecnico['direccion'].', '.$tecnico['localidad'].', '.$tecnico['provincia']);
             $tecnico['latitude'] = $coords['latitude'];
             $tecnico['longitude'] = $coords['longitude'];
-            $_ITEC_temp -> update('_tecnicos', ['latitude' => $coords['latitude'], 'longitude' => $coords['longitude']], ['_tecnicos_id' => $tecnico['_tecnicos_id']]);
+            $this -> _ITExt -> update('_tecnicos', ['latitude' => $coords['latitude'], 'longitude' => $coords['longitude']], ['_tecnicos_id' => $tecnico['_tecnicos_id']]);
         }
         $coordenadas[$tecnico['latitude'].' - '.$tecnico['longitude']][] = $tecnico;
     }}
@@ -137,7 +128,7 @@ function initMap_<?=$component_info['report_components_id']?>() {
                 <?php if( $info ) { ?>
                     marker_<?=$component_info['report_components_id']?>_<?=$tecnico['_tecnicos_id']?>.addListener( 'click', function(){
                         <?php
-                        $url_d = encode(['table' => '_tecnicos', 'id' => $tecnico['_tecnicos_id'], 'dsn' => $_ITEC_temp -> info()['dsn'] ]);
+                        $url_d = encode(['table' => '_tecnicos', 'id' => $tecnico['_tecnicos_id'], 'dsn' => $this -> _ITExt -> info()['dsn'] ]);
                         ?>
                         window.location.href = '<?=$details_url?>?d=<?=$url_d?>';
                     } );
@@ -156,7 +147,7 @@ function initMap_<?=$component_info['report_components_id']?>() {
             <?php if( $info ) { ?>
                 marker_<?=$component_info['report_components_id']?>_<?=$tecnicos[0]['_tecnicos_id']?>.addListener( 'click', function(){
                     <?php
-                    $url_d = encode(['table' => '_tecnicos', 'id' => $tecnicos[0]['_tecnicos_id'], 'dsn' => $_ITEC_temp -> info()['dsn'] ]);
+                    $url_d = encode(['table' => '_tecnicos', 'id' => $tecnicos[0]['_tecnicos_id'], 'dsn' => $this -> _ITExt -> info()['dsn'] ]);
                     ?>
                     window.location.href = '<?=$details_url?>?d=<?=$url_d?>';
                 } );
@@ -165,7 +156,7 @@ function initMap_<?=$component_info['report_components_id']?>() {
             <?php } ?>
         <?php } ?>
     <?php }
-    $_ITE -> debug -> disabled = false;
+    $this -> _ITE -> debug -> disabled = false;
     ?>
     
 
