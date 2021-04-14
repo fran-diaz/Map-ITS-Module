@@ -1,5 +1,5 @@
 <?php
-init_ITEC();
+//init_ITEC();
 
 if( ! function_exists( 'randy' ) ) {
     function randy(){
@@ -21,7 +21,7 @@ function codeAddress( address ) {
     });
 }
 <?php
-$_ITE -> debug -> disabled = true;
+$this -> _ITE -> debug -> disabled = true;
 $coordenadas = [];
 
 
