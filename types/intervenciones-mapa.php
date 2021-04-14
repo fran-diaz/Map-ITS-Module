@@ -1,6 +1,6 @@
 <?php
 //init_ITEC();
-
+var_dump($this -> component_id);die();
 if( ! function_exists( 'randy' ) ) {
     function randy(){
         return floatval('0.00000'.rand()) + floatval('0.00000'.rand()) - floatval('0.00000'.rand());
