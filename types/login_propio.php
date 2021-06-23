@@ -13,6 +13,7 @@ var map_<?=$this -> component_id?>;
 function initMap_<?=$this -> component_id?>() {
     map_<?=$this -> component_id?> = new google.maps.Map(document.getElementById('map-<?=$this -> component_id?>'), {
         zoom: <?=$this->cfg( 'contenido', 'zoom' )?>,
+        gestureHandling: 'cooperative',
         center: { lat: 40.4381311, lng: -3.8196196 },
         heading: 90,
     tilt: 45

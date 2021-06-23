@@ -40,6 +40,7 @@ function initMap_<?=$this -> component_id?>() {
     //geocoder = new google.maps.Geocoder();
     map_<?=$this -> component_id?> = new google.maps.Map(document.getElementById('map-<?=$this -> component_id?>'), {
         zoom: <?=$this->cfg( 'contenido', 'zoom' )?>,
+        gestureHandling: 'cooperative',
         center: <?=$center_coods?>,
         heading: 90,
     tilt: 45
