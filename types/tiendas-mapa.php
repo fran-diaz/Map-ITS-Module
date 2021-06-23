@@ -45,10 +45,9 @@ function initMap_<?=$this -> component_id?>() {
     //geocoder = new google.maps.Geocoder();
     map_<?=$this -> component_id?> = new google.maps.Map(document.getElementById('map-<?=$this -> component_id?>'), {
         zoom: <?=$this->cfg( 'contenido', 'zoom' )?>,
-        gestureHandling: 'cooperative',
         center: <?=$center_coods?>,
         heading: 90,
-    tilt: 45
+        tilt: 45
     });
 
     <?php
@@ -107,8 +106,8 @@ function initMap_<?=$this -> component_id?>() {
         }
         $coordenadas[$tienda['latitude'].' - '.$tienda['longitude']][] = $tienda;
     }}
-
-    $info = $_ITEC -> get( 'reports', '*', ['hook' => '_centros_trabajo'] );
+    
+    $info = $this -> _ITEC -> get( 'reports', '*', ['hook' => '_centros_trabajo'] );
     if( $info ) {
         $details_url = '/informes/'.$info['reports_id'];
     }
@@ -153,7 +152,7 @@ function initMap_<?=$this -> component_id?>() {
             <?php if( $info ) { ?>
                 marker_<?=$this -> component_id?>_<?=$tiendas[0]['_centros_trabajo_id']?>.addListener( 'click', function(){
                     <?php
-                    $url_d = encode(['table' => '_centros_trabajo', 'id' => $tiendas[0]['_centros_trabajo_id'], 'dsn' => $_ITEC_temp -> info()['dsn'] ]);
+                    $url_d = encode(['table' => '_centros_trabajo', 'id' => $tiendas[0]['_centros_trabajo_id'], 'dsn' => $this -> _ITExt -> info()['dsn'] ]);
                     ?>
                     window.location.href = '<?=$details_url?>?d=<?=$url_d?>';
                 } );
@@ -164,6 +163,7 @@ function initMap_<?=$this -> component_id?>() {
     <?php }
     $this -> _ITE -> debug -> disabled = false;
     ?>
+
 }
 
 
